@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_sitef" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sitef</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='pos_interface_section']" position="after">
+                <block title="Integración SITEF - Farmacia Las Ballenas" id="sitef_config_section">
+                    <div class="row mt16 o_settings_container">
+                        
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane border-start ps-3">
+                                <span class="o_form_label fw-bold text-primary">SERVICIO: VUELTO</span>
+                                <div class="content-group mt10">
+                                    <div class="row mb-2">
+                                        <label for="sitef_vuelto_client_id" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_vuelto_client_id"/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="sitef_vuelto_client_secret" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_vuelto_client_secret" widget="password"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane border-start ps-3">
+                                <span class="o_form_label fw-bold text-success">SERVICIO: CONSULTAS</span>
+                                <div class="content-group mt10">
+                                    <div class="row mb-2">
+                                        <label for="sitef_consulta_client_id" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_consulta_client_id"/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="sitef_consulta_client_secret" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_consulta_client_secret" widget="password"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box mt-4">
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label fw-bold">TERMINAL Y SEDE</span>
+                                <div class="content-group mt10">
+                                    <div class="row mb-2">
+                                        <label for="sitef_id_sede" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_id_sede"/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="sitef_codigo_caja" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_codigo_caja"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box mt-4">
+                            <div class="o_setting_right_pane border-start ps-3">
+                                <span class="o_form_label fw-bold text-warning">MERCHANT LOCAL (PUNTO)</span>
+                                <div class="content-group mt10">
+                                    <div class="row mb-2">
+                                        <label for="sitef_merchant_ip" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_merchant_ip"/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="sitef_merchant_puerto" class="col-lg-4 o_light_label"/>
+                                        <field name="sitef_merchant_puerto"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

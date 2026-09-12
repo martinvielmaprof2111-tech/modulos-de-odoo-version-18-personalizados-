@@ -1,0 +1,364 @@
+/* Overlay General de Bloqueo */
+.sitef-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 9999999 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Caja Rediseñada Ampliada y Contenido Adaptable */
+.sitef-wizard-box {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    width: 540px !important; /* Caja ensanchada para mejor visualización */
+    max-width: 95% !important;
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.6) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+}
+
+/* Encabezado Ajustado */
+.sitef-wizard-header {
+    background: #714B67 !important;
+    padding: 16px 24px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 2px solid #5a3c52 !important;
+}
+
+.sitef-wizard-header h3 {
+    margin: 0 !important;
+    font-size: 1.4rem !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+/* Barra de Indicadores de Pasos */
+.sitef-steps-indicator {
+    display: flex !important;
+    justify-content: space-between !important;
+    background: #f8f9fa !important;
+    padding: 14px 24px !important;
+    border-bottom: 1px solid #e9ecef !important;
+}
+
+.sitef-step-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: bold !important;
+    color: #adb5bd !important;
+}
+
+.sitef-step-item.active {
+    color: #714B67 !important;
+}
+
+.sitef-step-item.completed {
+    color: #00A09D !important;
+}
+
+.sitef-step-number {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    background: #dee2e6 !important;
+    color: #ffffff !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 0.85rem !important;
+}
+
+.sitef-step-item.active .sitef-step-number {
+    background: #714B67 !important;
+}
+
+.sitef-step-item.completed .sitef-step-number {
+    background: #00A09D !important;
+}
+
+/* Cuerpo Interno Adaptable */
+.sitef-wizard-body {
+    padding: 22px 24px !important;
+    background: #ffffff !important;
+}
+
+/* Zonas de Campo de Entrada */
+.sitef-input-central-zone {
+    margin-bottom: 20px !important;
+}
+
+.sitef-form-group label {
+    display: block !important;
+    font-size: 0.85rem !important;
+    font-weight: bold !important;
+    color: #495057 !important;
+    margin-bottom: 8px !important;
+    text-align: left !important;
+    letter-spacing: 0.5px;
+}
+
+.sitef-input-giant {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 1.65rem !important;
+    font-weight: bold !important;
+    border: 2px solid #ced4da !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    color: #212529 !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease;
+}
+
+/* Resalte visual del foco de edición activa */
+.input-focused {
+    border-color: #714B67 !important;
+    box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.2) !important;
+    background-color: #ffffff !important;
+}
+
+.sitef-select-giant {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    border: 2px solid #ced4da !important;
+    border-radius: 8px !important;
+    background-color: #ffffff !important;
+}
+
+.sitef-input-inline {
+    display: flex !important;
+    gap: 12px !important;
+}
+
+.sitef-input-inline select {
+    width: 25% !important;
+    font-size: 1.4rem !important;
+    font-weight: bold !important;
+    border: 2px solid #ced4da !important;
+    border-radius: 8px !important;
+    text-align: center;
+}
+
+/* Contenedores para Distribución Dual en el Paso 3 */
+.sitef-dual-amount-container {
+    display: flex !important;
+    gap: 15px !important;
+    align-items: flex-end !important;
+    margin-bottom: 5px !important;
+}
+
+.sitef-usd-highlight-box {
+    flex: 1 !important;
+    background: #ebfbf2 !important;
+    border: 2px solid #a3e4be !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 64px !important;
+    box-sizing: border-box !important;
+}
+
+.sitef-usd-label {
+    font-size: 0.75rem !important;
+    font-weight: bold !important;
+    color: #155724 !important;
+    margin-bottom: 2px !important;
+}
+
+.sitef-usd-value {
+    font-size: 1.6rem !important;
+    font-weight: 900 !important;
+    color: #28a745 !important;
+}
+
+/* Teclado Táctil Adaptado a Ventana Grande */
+.sitef-hardware-keypad {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+    width: 100% !important;
+}
+
+.btn-key {
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 8px !important;
+    padding: 14px 0 !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    color: #212529 !important;
+    cursor: pointer !important;
+    user-select: none !important;
+}
+
+.btn-key:active {
+    background: #e2e6ea !important;
+}
+
+.btn-key-delete {
+    background: #e9ecef !important;
+    color: #dc3545 !important;
+}
+
+/* Footer de Navegación */
+.sitef-wizard-footer {
+    background: #f1f3f5 !important;
+    padding: 16px 24px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-top: 1px solid #e9ecef !important;
+}
+
+.sitef-wizard-footer button {
+    padding: 12px 26px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    font-size: 1.1rem !important;
+}
+
+#btn_wizard_abort {
+    background: #6c757d !important;
+    color: #ffffff !important;
+}
+
+#btn_wizard_next {
+    background: #714B67 !important;
+    color: #ffffff !important;
+}
+
+/* Spinner y Pantalla de Bloqueo */
+.sitef-loading-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 10 !important;
+}
+
+.sitef-spinner {
+    width: 55px !important;
+    height: 55px !important;
+    border: 5px solid #f3f3f3 !important;
+    border-top: 5px solid #714B67 !important;
+    border-radius: 50% !important;
+    animation: sitef_spin 1s linear infinite !important;
+    margin-bottom: 15px !important;
+}
+
+.sitef-loading-text {
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    color: #714B67 !important;
+}
+
+@keyframes sitef_spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Caja de Confirmación de Vueltos */
+.sitef-summary-confirm-box {
+    background: #fff3cd !important;
+    border: 1px solid #ffeeba !important;
+    border-radius: 10px !important;
+    padding: 18px !important;
+    text-align: left !important;
+    margin-bottom: 5px !important;
+}
+
+/* Círculos de Estado Animados (Fallo y Éxito) */
+.sitef-error-circle, .sitef-success-circle {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 2.5rem !important;
+    font-weight: bold !important;
+    margin-bottom: 18px !important;
+    animation: sitef_bounce 0.4s ease-out !important;
+    box-sizing: border-box !important;
+}
+
+.sitef-error-circle {
+    background: #f8d7da !important;
+    color: #dc3545 !important;
+    border: 4px solid #dc3545 !important;
+}
+
+.sitef-success-circle {
+    background: #d4edda !important;
+    color: #28a745 !important;
+    border: 4px solid #28a745 !important;
+}
+
+.sitef-error-msg-title, .sitef-success-msg-title {
+    font-size: 1.4rem !important;
+    font-weight: bold !important;
+    margin-bottom: 10px !important;
+}
+
+.sitef-error-msg-title { color: #dc3545 !important; }
+.sitef-success-msg-title { color: #28a745 !important; }
+
+.sitef-error-msg-desc, .sitef-success-msg-desc {
+    font-size: 1.05rem !important;
+    color: #6c757d !important;
+    text-align: center !important;
+    padding: 0 30px !important;
+    margin-bottom: 22px !important;
+    line-height: 1.4;
+}
+
+/* Botones de Cierre de Estados Finales */
+.sitef-btn-error-close, .sitef-btn-success-close {
+    color: #ffffff !important;
+    border: none !important;
+    padding: 12px 28px !important;
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: background 0.2s !important;
+}
+
+.sitef-btn-error-close { background: #dc3545 !important; }
+.sitef-btn-error-close:hover { background: #bd2130 !important; }
+
+.sitef-btn-success-close { background: #28a745 !important; }
+.sitef-btn-success-close:hover { background: #218838 !important; }
+
+@keyframes sitef_bounce {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.1); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}

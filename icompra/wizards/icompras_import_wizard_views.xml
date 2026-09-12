@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vista Formulario Principal del Wizard -->
+    <record id="view_icompras_import_wizard_form" model="ir.ui.view">
+        <field name="name">icompras.import.wizard.form</field>
+        <field name="model">icompras.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Importar Pedidos desde iCompras">
+                <sheet>
+                    <div class="alert alert-info" role="alert" style="margin-bottom:15px;">
+                        <strong>Instrucciones:</strong> Seleccione los productos deseados dentro de cada pedido y presione "Generar Solicitudes de Presupuesto".
+                    </div>
+                    
+                    <group>
+                        <group string="Rango de Fechas de Consulta">
+                            <field name="date_start" string="Fecha Inicial"/>
+                            <field name="date_end" string="Fecha Final"/>
+                        </group>
+                        <group string="Acción de Escaneo" class="oe_edit_only">
+                            <p class="text-muted">Consulte los documentos cargados en el portal externo:</p>
+                            <button name="action_consultar_api" string="Consultar en iCompras" type="object" class="btn-secondary" icon="fa-search"/>
+                        </group>
+                    </group>
+                    
+                    <separator string="Pedidos Disponibles"/>
+
+                    <div style="margin-bottom: 10px;">
+                        <button name="action_select_all_lines" string="Marcar Todos los Productos" type="object" class="btn-sm btn-outline-primary" icon="fa-check-square-o"/>
+                        <button name="action_deselect_all_lines" string="Desmarcar Todos los Productos" type="object" class="btn-sm btn-outline-secondary" icon="fa-square-o" style="margin-left: 5px;"/>
+                    </div>
+                    
+                    <field name="line_ids">
+                        <list create="false" delete="false" editable="bottom">
+                            <field name="id_pedido_externo" string="ID Pedido" readonly="1"/>
+                            <field name="nombre_proveedor" string="Proveedor" readonly="1"/>
+                            <field name="progreso_seleccion" string="Productos Incluidos" readonly="1"/>
+                            <field name="monto_total" string="Monto Est. (Odoo)" sum="Monto Total" readonly="1"/>
+                            <button name="action_open_detail" type="object" icon="fa-eye" title="Ver / Seleccionar Productos"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_procesar_importacion" string="Generar Solicitudes de Presupuesto (Borrador)" type="object" class="btn-primary" data-hotkey="q" confirm="¿Desea inyectar los productos seleccionados como Solicitudes de Presupuesto en borrador?"/>
+                    <button string="Cerrar" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Formulario Específica para el Desglose del Pedido -->
+    <record id="view_icompras_import_wizard_line_form" model="ir.ui.view">
+        <field name="name">icompras.import.wizard.line.form</field>
+        <field name="model">icompras.import.wizard.line</field>
+        <field name="arch" type="xml">
+            <form string="Desglose del Pedido">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="id_pedido_externo" string="ID Pedido (iCompras)" readonly="1"/>
+                            <field name="nombre_proveedor" string="Proveedor" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="cod_proveedor_externo" string="Código Proveedor Ext." readonly="1"/>
+                            <field name="progreso_seleccion" string="Productos Marcados" readonly="1"/>
+                            <field name="monto_total" string="Monto Estimado (Odoo)" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <separator string="Productos y Cantidades Incluidas"/>
+
+                    <group>
+                        <field name="filter_keyword" string="Buscar Producto" placeholder="Escriba código de barras o nombre para filtrar en vivo..."/>
+                    </group>
+
+                    <div style="margin-bottom:10px;">
+                        <button name="action_select_all_details" string="Marcar Todos" type="object" class="btn-sm btn-outline-primary" icon="fa-check-square-o"/>
+                        <button name="action_deselect_all_details" string="Desmarcar Todos" type="object" class="btn-sm btn-outline-secondary" icon="fa-square-o" style="margin-left:5px;"/>
+                    </div>
+
+                    <field name="detail_ids">
+                        <list create="false" delete="false" editable="bottom">
+                            <field name="is_visible" column_invisible="1"/>
+                            <field name="selected" string="Incluir"/>
+                            <field name="barcode" string="Código de Barras" readonly="1"/>
+                            <field name="product_name" string="Producto (Odoo)" readonly="1"/>
+                            <field name="cantidad" string="Cantidad" readonly="1"/>
+                            <field name="precio_estandar" string="Precio Estándar (Odoo)" readonly="1"/>
+                            <field name="subtotal" string="Subtotal" sum="Total Desglosado" readonly="1"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_save_and_return" string="Volver a la Lista de Pedidos" type="object" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_icompras_import_wizard" model="ir.actions.act_window">
+        <field name="name">Importar Pedidos iCompras</field>
+        <field name="res_model">icompras.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_icompras_import_wizard_action" name="iCompras: Importar Pedidos" parent="purchase.menu_procurement_management" action="action_icompras_import_wizard" sequence="15"/>
+</odoo>

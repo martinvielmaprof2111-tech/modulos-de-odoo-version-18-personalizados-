@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_icompras_config" model="ir.actions.act_window">
+        <field name="name">Configuración iCompras360</field>
+        <field name="res_model">icompras.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="view_icompras_config_form" model="ir.ui.view">
+        <field name="name">icompras.config.form</field>
+        <field name="model">icompras.config</field>
+        <field name="arch" type="xml">
+            <form string="Configuración iCompras360">
+                <header>
+                    <button name="action_test_configuration" string="Probar Configuración" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Activo" bg_color="text-bg-success" invisible="not active"/>
+                    <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
+                    
+                    <group>
+                        <group string="Datos de Identificación">
+                            <field name="cod_isb" placeholder="Ej. 404024212"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Seguridad de la API">
+                            <field name="api_token" password="True" placeholder="Introduce el token de seguridad"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_icompras_config_tree" model="ir.ui.view">
+        <field name="name">icompras.config.list</field>
+        <field name="model">icompras.config</field>
+        <field name="arch" type="xml">
+            <list string="Configuraciones iCompras360">
+                <field name="cod_isb"/>
+                <field name="create_date"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <menuitem id="menu_icompras_config_root" name="iCompras360" parent="stock.menu_stock_config_settings" action="action_icompras_config" sequence="100"/>
+</odoo>

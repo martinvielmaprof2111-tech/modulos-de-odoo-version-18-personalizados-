@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_sitef_device" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sitef_device</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='sitef_config_section']" position="after">
+                <block title="Parámetros Físicos y de Red: SITEF" id="sitef_device_section">
+                    <div class="row mt16 o_settings_container">
+                        
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane border-start ps-3">
+                                <span class="o_form_label fw-bold text-dark">IDENTIDAD EN PASARELA</span>
+                                <div class="content-group mt10">
+                                    <div class="row mb-2">
+                                        <label for="sitef_id_sede" class="col-lg-4 o_light_label"/>
+                                        <div class="col-lg-8">
+                                            <field name="sitef_id_sede"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="sitef_codigo_caja" class="col-lg-4 o_light_label"/>
+                                        <div class="col-lg-8">
+                                            <field name="sitef_codigo_caja"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane border-start ps-3">
+                                <span class="o_form_label fw-bold text-warning">CONEXIÓN AL SWITCH LOCAL</span>
+                                <div class="content-group mt10">
+                                    <div class="row mb-2">
+                                        <label for="sitef_usuario_local" class="col-lg-4 o_light_label"/>
+                                        <div class="col-lg-8">
+                                            <field name="sitef_usuario_local" placeholder="Ej: FarmaciaBallenaC1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="sitef_password_local" class="col-lg-4 o_light_label"/>
+                                        <div class="col-lg-8">
+                                            <field name="sitef_password_local" widget="password"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

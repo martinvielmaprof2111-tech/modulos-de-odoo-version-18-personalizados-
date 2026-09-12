@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_icompras_config,icompras.config,model_icompras_config,base.group_user,1,1,1,1
+access_icompras_api_config,icompras.api.config,model_icompras_api_config,base.group_user,1,1,1,1
+access_icompras_log_error,icompras.log.error,model_icompras_log_error,base.group_user,1,1,1,1
+access_icompras_import_wizard,icompras.import.wizard,model_icompras_import_wizard,base.group_user,1,1,1,1
+access_icompras_import_wizard_line,icompras.import.wizard.line,model_icompras_import_wizard_line,base.group_user,1,1,1,1
+access_icompras_import_wizard_line_detail,icompras.import.wizard.line.detail,model_icompras_import_wizard_line_detail,base.group_user,1,1,1,1

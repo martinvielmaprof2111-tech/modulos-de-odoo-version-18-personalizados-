@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_payment_method_view_form_inherit_sitef" model="ir.ui.view">
+        <field name="name">pos.payment.method.form.inherit.sitef</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="CONFIGURACIÓN SITEF" name="sitef_gateway">
+                    <field name="use_pasarela_sitef"/>
+                    <field name="tipo_servicio_sitef" invisible="not use_pasarela_sitef"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
