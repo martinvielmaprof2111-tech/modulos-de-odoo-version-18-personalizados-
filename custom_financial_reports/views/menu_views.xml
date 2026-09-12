@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_financial_reports_root" name="Reportes Fiscales/Financieros" parent="account.menu_finance_reports" sequence="100"/>
+
+    <menuitem id="menu_relacion_cobranza" name="Relación de Cobranza" parent="menu_financial_reports_root" action="action_relacion_cobranza" sequence="10"/>
+    <menuitem id="menu_cuadre_diario" name="Cuadre Diario" parent="menu_financial_reports_root" action="action_cuadre_diario" sequence="20"/>
+    <menuitem id="menu_cuadre_diario_detalles" name="Cuadre Diario Detalles" parent="menu_financial_reports_root" action="action_cuadre_diario_detalles" sequence="25"/>
+    <menuitem id="menu_resumen_libro_ventas" name="Resumen Libro de Ventas " parent="menu_financial_reports_root" action="action_resumen_libro_ventas" sequence="30"/>
+    <menuitem id="menu_libro_ventas_diario" name="Libro de Ventas Diario " parent="menu_financial_reports_root" action="action_libro_ventas_diario" sequence="40"/>
+</odoo>

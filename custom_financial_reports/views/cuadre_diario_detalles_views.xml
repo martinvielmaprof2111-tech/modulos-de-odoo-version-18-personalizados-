@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cuadre_diario_detalles_form" model="ir.ui.view">
+        <field name="name">cuadre.diario.detalles.form</field>
+        <field name="model">cuadre.diario.detalles</field>
+        <field name="arch" type="xml">
+            <form string="Generar Cuadre Diario Detalles">
+                <group>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_pdf" string="Generar PDF" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cuadre_diario_detalles" model="ir.actions.act_window">
+        <field name="name">Cuadre Diario Detalles</field>
+        <field name="res_model">cuadre.diario.detalles</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

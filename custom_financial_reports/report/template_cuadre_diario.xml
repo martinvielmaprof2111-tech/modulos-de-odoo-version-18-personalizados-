@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_cuadre_diario">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-family: Arial, sans-serif; font-size: 10px; color: #333;">
+                        
+                        <!-- ENCABEZADO -->
+                        <table style="width: 100%; margin-bottom: 20px; padding-bottom: 12px;">
+                            <tr>
+                                <td style="width: 55%; vertical-align: top; padding-right: 15px;">
+                                    <h4 style="font-weight: bold; margin: 0 0 5px 0; text-transform: uppercase; color: #111;" t-esc="res_company.name"/>
+                                    <div style="font-size: 9.5px; color: #555;">
+                                        <div t-if="res_company.vat"><strong>RIF:</strong> <span t-esc="res_company.vat"/></div>
+                                        <div t-if="res_company.street"><span t-esc="res_company.street"/></div>
+                                        <div>
+                                            <span t-if="res_company.city" t-esc="res_company.city"/>
+                                            <span t-if="res_company.state_id">, <span t-esc="res_company.state_id.name"/></span>
+                                            <span t-if="res_company.country_id"> - <span t-esc="res_company.country_id.name"/></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="width: 45%; text-align: right; vertical-align: top;">
+                                    <h5 style="font-weight: bold; text-transform: uppercase; margin: 0 0 8px 0; font-size: 13px;">Resumen de Ventas y Conciliación</h5>
+                                    <div style="font-size: 9.5px; color: #444; line-height: 1.5;">
+                                        <div><strong>Periodo:</strong> <span t-esc="date_from" t-options='{"widget": "date"}'/> — <span t-esc="date_to" t-options='{"widget": "date"}'/></div>
+                                        <div><strong>Generado por:</strong> <span t-esc="env.user.name"/></div>
+                                        <div><strong>Emisión:</strong> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %I:%M %p')"/></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- RESUMEN EN DOS COLUMNAS -->
+                        <table style="width: 100%; margin-bottom: 15px; page-break-inside: avoid;">
+                            <tr>
+                                <!-- Columna Izquierda: Cobros -->
+                                <td style="width: 49%; vertical-align: top; padding-right: 1%;">
+                                    <table class="table table-sm table-bordered align-middle" style="margin-bottom: 0;">
+                                        <thead class="table-dark text-center">
+                                            <tr>
+                                                <th colspan="3" class="text-uppercase small fw-bold">Conciliación de Ingresos (Cobros)</th>
+                                            </tr>
+                                            <tr style="font-size: 8.5px;">
+                                                <th>Concepto</th>
+                                                <th class="text-end">Monto Local</th>
+                                                <th class="text-end">Monto ($)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span t-esc="count_efectivo"/> Total Efectivo</td>
+                                                <td class="text-end fw-bold"><span t-esc="total_efectivo" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold"><span t-esc="total_efectivo_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span t-esc="count_divisas"/> Divisas al Cambio</td>
+                                                <td class="text-end fw-bold"><span t-esc="total_divisas" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold"><span t-esc="total_divisas_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span t-esc="count_bancos"/> Total Opr. Bancos</td>
+                                                <td class="text-end fw-bold"><span t-esc="total_bancos" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold"><span t-esc="total_bancos_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span t-esc="count_tarjetas"/> Total Tarjetas / Pago Móvil</td>
+                                                <td class="text-end fw-bold"><span t-esc="total_tarjetas" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold"><span t-esc="total_tarjetas_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr class="table-secondary fw-bold">
+                                                <td>TOTAL INGRESOS BRUTOS</td>
+                                                <td class="text-end"><span t-esc="ingresos_brutos" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end"><span t-esc="ingresos_brutos_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                                <!-- Columna Derecha: Facturación -->
+                                <td style="width: 49%; vertical-align: top; padding-left: 1%;">
+                                    <table class="table table-sm table-bordered align-middle" style="margin-bottom: 8px;">
+                                        <thead class="table-dark text-center">
+                                            <tr>
+                                                <th colspan="3" class="text-uppercase small fw-bold">Resumen de Facturación</th>
+                                            </tr>
+                                            <tr style="font-size: 8.5px;">
+                                                <th>Concepto</th>
+                                                <th class="text-end">Monto Local</th>
+                                                <th class="text-end">Monto ($)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span t-esc="count_ventas"/> Total Ventas (Facturas)</td>
+                                                <td class="text-end fw-bold"><span t-esc="total_ventas" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold"><span t-esc="total_ventas_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span t-esc="count_nc"/> N/C Emitidas</td>
+                                                <td class="text-end fw-bold text-danger"><span t-esc="nc_emitidas" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold text-danger"><span t-esc="nc_emitidas_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span t-esc="count_credito"/> Ventas a Crédito</td>
+                                                <td class="text-end fw-bold"><span t-esc="ventas_credito" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold"><span t-esc="ventas_credito_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr t-if="total_descuentos &gt; 0">
+                                                <td>Total Descuentos Otorgados</td>
+                                                <td class="text-end fw-bold text-warning"><span t-esc="total_descuentos" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end fw-bold text-warning"><span t-esc="total_descuentos_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                            <tr class="table-secondary fw-bold">
+                                                <td>TOTAL VENTAS GENERAL (NETO)</td>
+                                                <td class="text-end"><span t-esc="total_ventas_general" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end"><span t-esc="total_ventas_general_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div style="padding: 6px; border: 1px solid #dee2e6; border-radius: 4px; background-color: #f8f9fa; font-size: 9px;">
+                                        <div><strong>Correlativos FAC:</strong> <span t-esc="fac_desde"/> al <span t-esc="fac_hasta"/></div>
+                                        <div><strong>Correlativos N/C:</strong> <span t-esc="nc_desde"/> al <span t-esc="nc_hasta"/></div>
+                                        <div><strong>Facturas Anuladas:</strong> <span t-esc="count_anulados"/></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- RELACIÓN DE OPERACIONES BANCARIAS / TARJETAS (TODOS LOS PAGOS INDIVIDUALES) -->
+                        <div style="margin-bottom: 15px; page-break-inside: avoid;" t-if="card_bank_details">
+                            <h6 style="font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 3px; margin-bottom: 8px; text-transform: uppercase;">Relación de Tarjetas, Pago Móvil y Bancos</h6>
+                            <table class="table table-sm table-striped table-bordered align-middle">
+                                <thead class="table-light text-center">
+                                    <tr>
+                                        <th class="text-start">Diario / Banco</th>
+                                        <th>Tipo Transacción</th>
+                                        <th>N° Operación / Ref.</th>
+                                        <th class="text-start">Documento / Cliente</th>
+                                        <th class="text-end">Monto Local</th>
+                                        <th class="text-end">Monto ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="card_bank_details" t-as="item">
+                                        <tr style="page-break-inside: avoid;">
+                                            <td class="text-start"><span t-esc="item['journal']"/></td>
+                                            <td class="text-center"><span t-esc="item['type']"/></td>
+                                            <td class="text-center"><span t-esc="item['ref']"/></td>
+                                            <td class="text-start"><span t-esc="item['doc_ref']"/> - <span t-esc="item['partner']"/></td>
+                                            <td class="text-end fw-bold"><span t-esc="item['amount']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                            <td class="text-end fw-bold"><span t-esc="item['amount_usd']" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- RELACIÓN DE VENTAS POR VENDEDOR -->
+                        <div style="margin-bottom: 15px; page-break-inside: avoid;" t-if="sellers_list">
+                            <h6 style="font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 3px; margin-bottom: 8px; text-transform: uppercase;">Relación de Ventas por Vendedor</h6>
+                            <table class="table table-sm table-striped table-bordered text-center align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-start">Vendedor</th>
+                                        <th># Vtas.</th>
+                                        <th>Art.</th>
+                                        <th class="text-end">Base (Neto-IVA)</th>
+                                        <th class="text-end">Monto Total</th>
+                                        <th class="text-end">Monto ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="sellers_list" t-as="seller">
+                                        <tr style="page-break-inside: avoid;">
+                                            <td class="text-start"><span t-esc="seller['name']"/></td>
+                                            <td><span t-esc="seller['count']"/></td>
+                                            <td><span t-esc="int(seller['items_qty'])"/></td>
+                                            <td class="text-end"><span t-esc="seller['untaxed_amount']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                            <td class="text-end fw-bold"><span t-esc="seller['total_amount']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                            <td class="text-end fw-bold"><span t-esc="seller['total_amount_usd']" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-secondary fw-bold" style="page-break-inside: avoid;">
+                                        <td class="text-start">TOTALES</td>
+                                        <td><span t-esc="total_seller_vtas"/></td>
+                                        <td><span t-esc="int(total_seller_arts)"/></td>
+                                        <td class="text-end"><span t-esc="total_seller_untaxed" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                        <td class="text-end"><span t-esc="total_seller_amount" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                        <td class="text-end"><span t-esc="total_seller_amount_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

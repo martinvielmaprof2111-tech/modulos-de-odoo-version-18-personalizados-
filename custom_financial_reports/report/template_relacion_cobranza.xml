@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_relacion_cobranza">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="article page" t-att-data-oe-model="doc._name" t-att-data-oe-id="doc.id">
+                    
+                    <!-- Encabezado Personalizado -->
+                    <div class="row mb-3" style="font-size: 12px; border-bottom: 2px solid #000; padding-bottom: 8px;">
+                        <div class="col-6">
+                            <h3 class="m-0" t-field="res_company.name"/>
+                            <div t-field="res_company.street"/>
+                            <div t-field="res_company.city"/>
+                            <div>Teléfonos: <span t-field="res_company.phone"/></div>
+                        </div>
+                        <div class="col-6 text-end">
+                            <h2>Relación de Cobranzas</h2>
+                            <div><strong>Desde:</strong> <span t-field="doc.date_from"/> <strong>Hasta:</strong> <span t-field="doc.date_to"/></div>
+                            <div><strong>Usuario Creador:</strong> <span t-esc="doc.user_id.name if doc.user_id else 'Todos los Usuarios'"/></div>
+                            <div><strong>Procesado por:</strong> <span t-esc="user.name"/></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Detalle de Pagos -->
+                    <table class="table table-sm table-bordered" style="font-size: 10px; margin-top: 10px;">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>#</th>
+                                <th># Documento</th>
+                                <th>Fecha</th>
+                                <th>Pag / Descripción del pago</th>
+                                <th># Operación / Plazo</th>
+                                <th>Monto BS</th>
+                                <th>Tasa Cambio</th>
+                                <th>Monto Divisas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="idx" t-value="1"/>
+                            <t t-foreach="payment_lines" t-as="line">
+                                <tr>
+                                    <td class="text-center"><span t-esc="idx"/></td>
+                                    <td><span t-esc="line['doc_num']"/></td>
+                                    <td class="text-center"><span t-esc="line['fecha']" t-options='{"widget": "date"}'/></td>
+                                    <td>
+                                        <div><strong><span t-esc="line['cliente']"/></strong></div>
+                                        <div><span t-esc="line['forma_pago']"/> - Doc: <span t-esc="line['ref_doc']"/></div>
+                                        <div><strong>Creado por:</strong> <span t-esc="line['creado_por']"/></div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div><span t-esc="line['num_operacion']"/></div>
+                                        <div><small class="text-muted"><span t-esc="line['plazo_pago']"/></small></div>
+                                    </td>
+                                    <td class="text-end"><span t-esc="line['monto_bs']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td class="text-end"><span t-esc="line['tasa']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td class="text-end"><span t-esc="line['monto_divisa']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+                                <t t-set="idx" t-value="idx + 1"/>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- Totales del Reporte -->
+                    <div class="row mt-4" style="font-size: 11px;">
+                        <div class="col-6"></div>
+                        <div class="col-6">
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <td><strong>N. Crédito o Adelantos Aplicados:</strong></td>
+                                    <td class="text-end">0,00</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Bs:</strong></td>
+                                    <td class="text-end"><span t-esc="total_bs" t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Divisas:</strong></td>
+                                    <td class="text-end"><span t-esc="total_divisas" t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Divisa y Bs (al Cambio):</strong></td>
+                                    <td class="text-end"><span t-esc="total_cambio" t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
