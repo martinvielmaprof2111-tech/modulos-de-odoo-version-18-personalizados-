@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. Campo de Stock y Almacén en las líneas del pedido + Limpieza de Widget -->
+    <record id="view_order_form_inherit_single_stock_field" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.single.stock.field</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
+                <field name="warehouse_id" string="Almacén" optional="show" readonly="1"/>
+                <field name="free_qty" 
+                       string="Stock Disp." 
+                       optional="show"
+                       decoration-success="free_qty &gt; 0"
+                       decoration-danger="free_qty &lt;= 0"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget"/>
+                <attribute name="options">{}</attribute>
+                <attribute name="decoration-danger"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- 2. Vista Kanban del Catálogo de Productos -->
+    <record id="product_view_kanban_catalog_inherit_stock" model="ir.ui.view">
+        <field name="name">product.product.kanban.catalog.inherit.stock</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+
+            <!-- Carga previa de los campos computados para asegurar disponibilidad en el template -->
+            <xpath expr="//templates" position="before">
+                <field name="usd_price"/>
+                <field name="usd_currency_id"/>
+                <field name="free_qty"/>
+            </xpath>
+
+            <!-- Reemplazo de la cantidad disponible por defecto -->
+            <xpath expr="//field[@name='qty_available']/.." position="replace"/>
+
+            <!-- Inserción de Almacén, Precio USD y Stock Libre -->
+            <xpath expr="//field[@name='name']" position="after">
+                <div class="text-muted small mt-1" t-if="record.warehouse_name and record.warehouse_name.value">
+                    <i class="fa fa-building-o me-1"/> Almacén: <t t-esc="record.warehouse_name.value"/>
+                </div>
+
+                <div class="fw-bold text-success small mt-1" t-if="record.usd_price">
+                    Precio USD: $<t t-esc="record.usd_price.raw_value ? record.usd_price.raw_value.toFixed(2) : '0.00'"/>
+                </div>
+
+                <div class="mt-1">
+                    <t t-set="qty_val" t-value="record.free_qty ? record.free_qty.raw_value : 0"/>
+                    <t t-if="qty_val &gt; 0">
+                        <span class="badge text-bg-success p-1">
+                            Stock Libre Almacén: <t t-esc="qty_val"/>
+                        </span>
+                    </t>
+                    <t t-else="">
+                        <span class="badge text-bg-danger p-1 fw-bold">
+                            SIN STOCK EN ALMACÉN (0.00)
+                        </span>
+                    </t>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
