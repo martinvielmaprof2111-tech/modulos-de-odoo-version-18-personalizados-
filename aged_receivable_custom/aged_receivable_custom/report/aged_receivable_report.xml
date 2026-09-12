@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_aged_receivable_custom" model="ir.actions.report">
+        <field name="name">Resumen de Vencimiento CxC</field>
+        <field name="model">aged.receivable.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">aged_receivable_custom.template_aged_receivable</field>
+        <field name="report_file">aged_receivable_custom.template_aged_receivable</field>
+        <field name="print_report_name">'Resumen_Vencimiento_CxC'</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="template_aged_receivable">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+
+                <style>
+                    table.table-aged {
+                        width: 100%;
+                        font-size: 10px;
+                        border-collapse: collapse;
+                    }
+                    table.table-aged th, table.table-aged td {
+                        padding: 4px;
+                        border: 1px solid #000;
+                    }
+                    table.table-aged thead {
+                        display: table-header-group;
+                    }
+                    table.table-aged tfoot {
+                        display: table-footer-group;
+                    }
+                    table.table-aged tr {
+                        page-break-inside: avoid;
+                    }
+                    .table-aged th {
+                        background-color: #f2f2f2;
+                        text-align: center;
+                        font-weight: bold;
+                    }
+                    .text-right { text-align: right; }
+                    .text-center { text-align: center; }
+                    .font-bold { font-weight: bold; }
+                    .row-van {
+                        background-color: #fff2cc;
+                        font-weight: bold;
+                        font-style: italic;
+                    }
+                </style>
+
+                <!-- ENCABEZADO QUE SE REPITE EN TODAS LAS PÁGINAS -->
+                <div class="header">
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <h4 class="text-center font-bold" style="margin:0;">Resumen de Vencimiento de Cuentas por Cobrar</h4>
+                            <div class="row mt-1" style="font-size: 10px;">
+                                <div class="col-6">
+                                    <strong>Fecha de Corte:</strong> <span t-esc="data.get('date_at')"/><br/>
+                                    <strong>Moneda:</strong> <span t-esc="data.get('currency_name')"/><br/>
+                                    <strong>Estado:</strong> <span t-esc="data.get('state_name')"/>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong>Grupo / Cat:</strong> <span t-esc="data.get('category_name')"/><br/>
+                                    <strong>Vendedor:</strong> <span t-esc="data.get('user_name')"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DE PÁGINA QUE SE REPITE EN TODAS LAS PÁGINAS -->
+                <div class="footer" style="font-size: 10px; border-top: 1px solid #000; padding-top: 4px;">
+                    <div class="row">
+                        <div class="col-7">
+                            <span>Procesado por: <strong t-esc="user.name"/></span><br/>
+                            <span>Fecha de emisión: <t t-esc="print_date"/></span>
+                        </div>
+                        <div class="col-5 text-right">
+                            <span>Página <span class="page"/> de <span class="topage"/></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CUERPO PRINCIPAL DEL DOCUMENTO -->
+                <div class="page">
+                    <table class="table-aged">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Cliente</th>
+                                <th>01 a 15 días</th>
+                                <th>16 a 30 días</th>
+                                <th>31 a 60 días</th>
+                                <th>61 a 90 días</th>
+                                <th>90 dias o más</th>
+                                <th>Total General</th>
+                            </tr>
+                        </thead>
+
+                        <!-- TFOOT: MUESTRA EL VAN EN EL CORTE INFERIOR DE CADA PÁGINA -->
+                        <tfoot>
+                            <tr class="row-van">
+                                <td colspan="6" class="text-right">Van :</td>
+                                <td class="text-right">
+                                    <span t-esc="totales_general['total']" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                        <tbody>
+                            <!-- AGRUPACIÓN POR GRUPO/ESTADO -->
+                            <t t-foreach="report_data" t-as="grupo">
+                                <tr style="background-color: #e6f2ff;">
+                                    <td colspan="7" class="font-bold">
+                                        ESTADO: <span t-esc="grupo"/>
+                                    </td>
+                                </tr>
+
+                                <t t-foreach="report_data[grupo]" t-as="cliente">
+                                    <t t-set="vals" t-value="report_data[grupo][cliente]"/>
+                                    <tr>
+                                        <td><span t-esc="cliente"/></td>
+                                        <td class="text-right"><span t-esc="vals['b1']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="vals['b2']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="vals['b3']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="vals['b4']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="vals['b5']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right font-bold"><span t-esc="vals['total']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    </tr>
+                                </t>
+                            </t>
+
+                            <!-- TOTALES GENERALES AL FINAL DE LA TABLA -->
+                            <tr class="font-bold" style="background-color: #d9d9d9;">
+                                <td>TOTALES GENERALES</td>
+                                <td class="text-right"><span t-esc="totales_general['b1']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td class="text-right"><span t-esc="totales_general['b2']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td class="text-right"><span t-esc="totales_general['b3']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td class="text-right"><span t-esc="totales_general['b4']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td class="text-right"><span t-esc="totales_general['b5']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td class="text-right"><span t-esc="totales_general['total']" t-options='{"widget": "float", "precision": 2}'/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- RESUMEN FINAL -->
+                    <div class="row mt-4" style="page-break-inside: avoid;">
+                        <div class="col-6">
+                            <table class="table-aged">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3">Distribución del Vencimiento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>De 01 a 15 días:</td>
+                                        <td class="text-right"><span t-esc="totales_general['b1']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="((totales_general['b1'] / totales_general['total'] * 100) if totales_general['total'] else 0.0)" t-options='{"widget": "float", "precision": 2}'/>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>De 16 a 30 días:</td>
+                                        <td class="text-right"><span t-esc="totales_general['b2']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="((totales_general['b2'] / totales_general['total'] * 100) if totales_general['total'] else 0.0)" t-options='{"widget": "float", "precision": 2}'/>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>De 31 a 60 días:</td>
+                                        <td class="text-right"><span t-esc="totales_general['b3']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="((totales_general['b3'] / totales_general['total'] * 100) if totales_general['total'] else 0.0)" t-options='{"widget": "float", "precision": 2}'/>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>De 61 a 90 días:</td>
+                                        <td class="text-right"><span t-esc="totales_general['b4']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="((totales_general['b4'] / totales_general['total'] * 100) if totales_general['total'] else 0.0)" t-options='{"widget": "float", "precision": 2}'/>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Más de 90 días:</td>
+                                        <td class="text-right"><span t-esc="totales_general['b5']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right"><span t-esc="((totales_general['b5'] / totales_general['total'] * 100) if totales_general['total'] else 0.0)" t-options='{"widget": "float", "precision": 2}'/>%</td>
+                                    </tr>
+                                    <tr class="font-bold">
+                                        <td>TOTAL GENERAL:</td>
+                                        <td class="text-right"><span t-esc="totales_general['total']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-right">100.00%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
