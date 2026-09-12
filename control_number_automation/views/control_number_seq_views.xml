@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_invoice_control_sequence_tree" model="ir.ui.view">
+        <field name="name">invoice.control.sequence.list</field>
+        <field name="model">invoice.control.sequence</field>
+        <field name="arch" type="xml">
+            <list string="Secuencias">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="journal_type"/>
+                <field name="prefix"/>
+                <field name="next_number"/>
+                <field name="padding"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_invoice_control_sequence_form" model="ir.ui.view">
+        <field name="name">invoice.control.sequence.form</field>
+        <field name="model">invoice.control.sequence</field>
+        <field name="arch" type="xml">
+            <form string="Secuencia de Control Fiscal">
+                <header>
+                    <button name="action_activate_sequence" 
+                            string="Activar Secuencia" 
+                            type="object" 
+                            class="oe_highlight" 
+                            invisible="active == True"/>
+                    <button name="action_deactivate_sequence" 
+                            string="Desactivar Secuencia" 
+                            type="object" 
+                            class="btn-secondary" 
+                            invisible="active == False"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Ej. Facturación Principal"/>
+                        </h1>
+                    </div>
+                    
+                    <!-- PRIMERA FILA: Segmentación y Formato -->
+                    <group>
+                        <group string="SEGMENTACIÓN FISCAL">
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="journal_type"/>
+                        </group>
+                        <group string="FORMATO DEL NÚMERO">
+                            <field name="prefix" placeholder="Ej. 00-"/>
+                            <field name="suffix" placeholder="Ej. /A"/>
+                            <field name="padding"/>
+                        </group>
+                    </group>
+
+                    <!-- SEGUNDA FILA: Rango de Control -->
+                    <group>
+                        <group string="RANGO DE CONTROL">
+                            <field name="start_number"/>
+                            <field name="end_number"/>
+                            <field name="next_number"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_invoice_control_sequence" model="ir.actions.act_window">
+        <field name="name">Secuencias de Control</field>
+        <field name="res_model">invoice.control.sequence</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_invoice_control_sequence" 
+              name="Secuencias Control Fiscal" 
+              parent="account.menu_finance_configuration" 
+              action="action_invoice_control_sequence" 
+              sequence="100"/>
+</odoo>
