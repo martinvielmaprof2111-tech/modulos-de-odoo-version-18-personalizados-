@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_property_form_credit_usd_widget" model="ir.ui.view">
+        <field name="name">res.partner.form.credit.usd.widget</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='use_partner_credit_limit']" position="before">
+                <field name="usd_currency_id" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='credit_limit']" position="attributes">
+                <attribute name="options">{'currency_field': 'usd_currency_id'}</attribute>
+                <attribute name="string">Límite de Crédito ($ USD)</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_credit_usd" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.credit.usd</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Oculta el límite por defecto original en Bs. -->
+            <xpath expr="//field[@name='account_default_credit_limit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Agrega el límite por defecto en USD -->
+            <xpath expr="//field[@name='account_default_credit_limit']" position="after">
+                <div class="content-group" invisible="not account_use_credit_limit">
+                    <div class="row mt16">
+                        <label for="credit_limit_usd_default" class="col-lg-4 o_light_label" string="Límite de crédito predeterminado ($)"/>
+                        <field name="credit_limit_usd_default" class="oe_inline"/>
+                    </div>
+                </div>
+            </xpath>
+
+            <!-- Configuración de Roles de Almacén y Notificaciones -->
+            <xpath expr="//block[@name='default_taxes_setting_container']" position="after">
+                <block title="Gestión Avanzada de Almacén" name="custom_warehouse_settings">
+                    <setting string="Roles de Notificación de Reabastecimiento" help="Usuarios que recibirán las alertas automáticas de surtido.">
+                        <div class="content-group mt16">
+                            <div class="row">
+                                <label for="surtidor_user_id" class="col-lg-4 o_light_label"/>
+                                <field name="surtidor_user_id"/>
+                            </div>
+                            <div class="row">
+                                <label for="jefe_almacen_user_id" class="col-lg-4 o_light_label"/>
+                                <field name="jefe_almacen_user_id"/>
+                            </div>
+                            <div class="row">
+                                <label for="almacenista_user_id" class="col-lg-4 o_light_label"/>
+                                <field name="almacenista_user_id"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting string="Excepción Multi-Company" help="Permite validar las salidas de mercancía sin requerir validación manual de surtido.">
+                        <field name="multicompany_exception"/>
+                    </setting>
+                </block>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
