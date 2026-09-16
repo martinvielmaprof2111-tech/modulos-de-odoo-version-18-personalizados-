@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_resumen_libro_ventas_form" model="ir.ui.view">
+        <field name="name">resumen.libro.ventas.form</field>
+        <field name="model">resumen.libro.ventas</field>
+        <field name="arch" type="xml">
+            <form string="Generar Resumen Libro de Ventas (Art. 72)">
+                <group>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_pdf" string="Generar PDF" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_resumen_libro_ventas" model="ir.actions.act_window">
+        <field name="name">Resumen Libro de Ventas (Art. 72)</field>
+        <field name="res_model">resumen.libro.ventas</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

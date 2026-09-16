@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_invoice_control_sequence_form" model="ir.ui.view">
+        <field name="name">invoice.control.sequence.form</field>
+        <field name="model">invoice.control.sequence</field>
+        <field name="arch" type="xml">
+            <form string="Secuencia de Número de Control">
+                <sheet>
+                    <widget name="web_ribbon" title="Activa" bg_color="bg-success" invisible="not active"/>
+                    <widget name="web_ribbon" title="Inactiva" bg_color="bg-danger" invisible="active"/>
+                    
+                    <div class="oe_title">
+                        <label for="name" string="Nombre de Secuencia"/>
+                        <h1>
+                            <field name="name" placeholder="Ej: Secuencia Ventas - MB MARACAIBO"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Ubicación y Diarios">
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="journal_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Formato del Número">
+                            <field name="prefix" placeholder="Ej. 00-"/>
+                            <field name="suffix" placeholder="Ej. /A"/>
+                            <field name="padding"/>
+                        </group>
+                    </group>
+
+                    <group string="Rango de Control">
+                        <group>
+                            <field name="start_number"/>
+                            <field name="end_number"/>
+                        </group>
+                        <group>
+                            <field name="next_number"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_invoice_control_sequence_tree" model="ir.ui.view">
+        <field name="name">invoice.control.sequence.tree</field>
+        <field name="model">invoice.control.sequence</field>
+        <field name="arch" type="xml">
+            <list string="Secuencias de Número de Control">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="journal_ids" widget="many2many_tags"/>
+                <field name="next_number"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_invoice_control_sequence" model="ir.actions.act_window">
+        <field name="name">Secuencias de Nro. Control</field>
+        <field name="res_model">invoice.control.sequence</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_invoice_control_sequence"
+              name="Secuencias Nro. Control"
+              parent="account.account_management_menu"
+              action="action_invoice_control_sequence"
+              sequence="10"/>
+</odoo>

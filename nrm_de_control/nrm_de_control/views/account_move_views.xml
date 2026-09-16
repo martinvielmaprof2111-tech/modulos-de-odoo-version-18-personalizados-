@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_inherit_nro_ctrl_custom" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.nro.ctrl.custom</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="nro_ctrl_preview" invisible="1"/>
+                <field name="nro_ctrl"
+                       string="Número de Control"
+                       force_save="1"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund', 'in_receipt')"
+                       readonly="move_type in ('out_invoice', 'out_refund', 'out_receipt') or state != 'draft'"
+                       required="move_type in ('in_invoice', 'in_refund', 'in_receipt') and state == 'draft'"
+                       placeholder="Próximo correlativo estimado o manual"/>
+                
+                
+                <div class="text-muted" 
+                     invisible="state != 'draft' or move_type not in ('out_invoice', 'out_refund', 'out_receipt') or nro_ctrl">
+                    <small>Próximo correlativo de la sucursal: <field name="nro_ctrl_preview" class="oe_inline fw-bold"/></small>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

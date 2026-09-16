@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_libro_ventas_diario">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="article" t-att-data-oe-model="o._name" t-att-data-oe-id="o.id">
+                    <div class="page" style="font-size: 8px; font-family: sans-serif;">
+                        
+                        <!-- ENCABEZADO PERSONALIZADO -->
+                        <div class="row mb-2">
+                            <div class="col-8">
+                                <h6 class="fw-bold mb-0"><span t-field="res_company.name"/></h6>
+                                <div><strong>R.I.F.:</strong> <span t-field="res_company.vat"/></div>
+                                <div><strong>Dirección Principal:</strong> <span t-field="res_company.street"/> <span t-field="res_company.street2"/></div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <h5 class="fw-bold mb-0">Libro de Ventas Artículo 77</h5>
+                                <div><strong>Desde Periodo:</strong> <span t-field="o.date"/></div>
+                                <div><strong>Hasta Periodo:</strong> <span t-field="o.date"/></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA SIMPLIFICADA CON COSTO/MONTO EN DÓLARES -->
+                        <table class="table table-bordered table-sm align-middle mb-2">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th style="width: 3%;">Nº Oper</th>
+                                    <th style="width: 7%;">Fecha Emisión</th>
+                                    <th style="width: 4%;">Tipo</th>
+                                    <th style="width: 10%;">Num. Factura</th>
+                                    <th style="width: 10%;">Num. Control</th>
+                                    <th style="width: 10%;">Factura Afectada</th>
+                                    <th style="width: 24%;">Nombre o Razón Social</th>
+                                    <th style="width: 8%;">R.I.F. / C.I.</th>
+                                    <th style="width: 12%;">Total Ventas</th>
+                                    <th style="width: 12%;">Monto ($)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="idx" t-value="1"/>
+                                <t t-foreach="invoice_list" t-as="inv">
+                                    <tr>
+                                        <td class="text-center"><t t-esc="idx"/></td>
+                                        <td class="text-center"><span t-esc="inv['fecha']" t-options='{"widget": "date"}'/></td>
+                                        <td class="text-center"><span t-esc="inv['tipo_doc']"/></td>
+                                        <td class="text-center"><span t-esc="inv['num_fac']"/></td>
+                                        <td class="text-center"><span t-esc="inv['num_control']"/></td>
+                                        <td class="text-center"><span t-esc="inv['fac_afectada']"/></td>
+                                        <td><span t-esc="inv['partner_name']"/></td>
+                                        <td class="text-center"><span t-esc="inv['partner_vat']"/></td>
+                                        <td class="text-end"><span t-esc="inv['total_con_imp']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                        <td class="text-end"><span t-esc="inv['monto_usd']" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                    </tr>
+                                    <t t-set="idx" t-value="idx + 1"/>
+                                </t>
+                                <tr class="fw-bold table-secondary">
+                                    <td colspan="8" class="text-end">SUBTOTALES DEL DÍA:</td>
+                                    <td class="text-end"><span t-esc="tot_ventas_con_imp" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="tot_monto_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- RESUMEN FINAL DE TOTALES -->
+                        <div class="row">
+                            <div class="col-6 offset-6">
+                                <table class="table table-bordered table-sm fw-bold">
+                                    <tr>
+                                        <td>Total Ventas Generales:</td>
+                                        <td class="text-end"><span t-esc="tot_ventas_con_imp" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Ventas ($ USD):</td>
+                                        <td class="text-end"><span t-esc="tot_monto_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

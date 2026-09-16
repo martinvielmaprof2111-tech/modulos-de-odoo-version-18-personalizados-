@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_resumen_libro_ventas">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="article" t-att-data-oe-model="o._name" t-att-data-oe-id="o.id">
+                    <div class="page" style="font-size: 10px; font-family: Arial, sans-serif;">
+                        
+                        <!-- ENCABEZADO PERSONALIZADO FISCAL -->
+                        <div class="row mb-3 border-bottom pb-2">
+                            <div class="col-7">
+                                <h5 class="fw-bold mb-1"><span t-field="res_company.name"/></h5>
+                                <div><strong>R.I.F.:</strong> <span t-field="res_company.vat"/></div>
+                                <div><strong>Dirección:</strong> <span t-field="res_company.street"/> <span t-field="res_company.street2"/></div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <h5 class="fw-bold mb-1">RESUMEN LIBRO DE VENTAS</h5>
+                                <div class="text-muted fw-bold mb-1">Según Art. 72 del Reglamento de la Ley del I.V.A.</div>
+                                <div><strong>Período:</strong> <span t-field="o.date_from"/> al <span t-field="o.date_to"/></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA DE DESGLOSE FISCAL (ART. 72) -->
+                        <table class="table table-bordered table-sm align-middle mb-3">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th rowspan="2" class="align-middle">Grupo de Ventas / Concepto</th>
+                                    <th rowspan="2" class="align-middle">Total Ventas Generales</th>
+                            
+
+
+                                    <th colspan="2">Ventas a Tasa 0,00%</th>
+                                    <th colspan="2">Ventas a Tasa 16,00%</th>
+                                </tr>
+                                <tr>
+                                    <th>Base 0%</th>
+                                    <th>IVA 0%</th>
+                                    <th>Base 16%</th>
+                                    <th>IVA 16%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- FACTURAS / VENTAS GRAVADAS -->
+                                <tr>
+                                    <td><strong>Total Ventas Gravadas (Facturas)</strong></td>
+                                    <td class="text-end"><span t-esc="fac_total" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="fac_base_0" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="fac_iva_0" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="fac_base_16" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="fac_iva_16" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                </tr>
+
+                                <!-- NOTAS DE CRÉDITO -->
+                                <tr>
+                                    <td><strong>Total Notas de Crédito</strong></td>
+                                    <td class="text-end">-<span t-esc="nc_total" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end">-<span t-esc="nc_base_0" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end">-<span t-esc="nc_iva_0" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end">-<span t-esc="nc_base_16" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end">-<span t-esc="nc_iva_16" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                </tr>
+
+                                <!-- TOTALES NETOS (FORMA LIBRE) -->
+                                <tr class="fw-bold table-secondary">
+                                    <td>TOTAL GENERAL FORMA LIBRE</td>
+                                    <td class="text-end"><span t-esc="neto_ventas_generales" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="neto_base_0" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="neto_iva_0" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="neto_base_16" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><span t-esc="neto_iva_16" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- RESUMEN FINAL -->
+                        <div class="row pt-2">
+                            <div class="col-6 offset-6">
+                                <table class="table table-bordered table-sm fw-bold">
+                                    <tr>
+                                        <td>Total Ventas Generales Netas:</td>
+                                        <td class="text-end"><span t-esc="neto_ventas_generales" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Base Imponible Neta:</td>
+                                        <td class="text-end"><span t-esc="neto_base_imponible" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Débito Fiscal (IVA 16%):</td>
+                                        <td class="text-end"><span t-esc="neto_iva_16" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Retenciones IVA sobre Ventas:</td>
+                                        <td class="text-end"><span t-esc="retenciones_sobre_ventas" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

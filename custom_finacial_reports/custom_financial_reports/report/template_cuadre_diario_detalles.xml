@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_cuadre_diario_detalles">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-family: Arial, sans-serif; font-size: 8.5px; color: #333;">
+                        
+                        <!-- ENCABEZADO COMPACTO -->
+                        <table style="width: 100%; margin-bottom: 8px; border-bottom: 2px solid #222; padding-bottom: 4px;">
+                            <tr>
+                                <td style="width: 55%; vertical-align: top;">
+                                    <h5 style="font-weight: bold; margin: 0; text-transform: uppercase;" t-esc="res_company.name"/>
+                                    <div style="font-size: 8px; color: #555;">
+                                        <span t-if="res_company.vat"><strong>RIF:</strong> <span t-esc="res_company.vat"/> — </span>
+                                        <span t-if="res_company.street" t-esc="res_company.street"/>
+                                    </div>
+                                </td>
+                                <td style="width: 45%; text-align: right; vertical-align: top;">
+                                    <h6 style="font-weight: bold; text-transform: uppercase; margin: 0;">Cuadre Diario Detalles</h6>
+                                    <div style="font-size: 8px; color: #444;">
+                                        <span><strong>Periodo:</strong> <span t-esc="date_from" t-options='{"widget": "date"}'/> — <span t-esc="date_to" t-options='{"widget": "date"}'/></span> | 
+                                        <span><strong>Emisión:</strong> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %I:%M %p')"/></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- TABLA ÚNICA COMPACTA -->
+                        <table class="table table-sm table-bordered align-middle mb-2" style="font-size: 8px; border-color: #ccc;">
+                            <thead class="table-dark text-center" style="font-size: 8px;">
+                                <tr>
+                                    <th style="width: 8%;">Fecha</th>
+                                    <th style="width: 5%;">Tipo</th>
+                                    <th style="width: 15%;">N° Documento / Método</th>
+                                    <th style="width: 27%;">Cliente / Razón Social / Ref.</th>
+                                    <th style="width: 10%;">RIF / CI / Operación</th>
+                                    <th class="text-end" style="width: 17%;">Monto (Bs.)</th>
+                                    <th class="text-end" style="width: 18%;">Monto ($)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="invoice_details" t-as="inv">
+                                    <!-- FILA PRINCIPAL DE LA FACTURA -->
+                                    <tr class="fw-bold table-light" style="background-color: #f2f2f2; border-top: 1.5px solid #999;">
+                                        <td class="text-center"><span t-esc="inv['fecha']" t-options='{"widget": "date"}'/></td>
+                                        <td class="text-center"><span t-esc="inv['move_type']"/></td>
+                                        <td><span t-esc="inv['name']"/></td>
+                                        <td><span t-esc="inv['partner']"/></td>
+                                        <td><span t-esc="inv['vat']"/></td>
+                                        <td class="text-end"><span t-esc="inv['total_inv']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                        <td class="text-end"><span t-esc="inv['total_inv_usd']" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                    </tr>
+
+                                    <!-- DESGLOSE DE PAGOS (FILAS SECUNDARIAS ANIDADAS) -->
+                                    <t t-if="not inv['is_cancel'] and inv['payments']">
+                                        <t t-foreach="inv['payments']" t-as="pay">
+                                            <tr style="font-size: 7.5px; color: #444; background-color: #fafafa;">
+                                                <td colspan="2" class="text-end text-muted"><em>Abono / Pago:</em></td>
+                                                <td class="ps-3"><i class="fa fa-angle-right me-1"/><span t-esc="pay['journal']"/></td>
+                                                <td><span t-esc="pay['payment_ref']"/></td>
+                                                <td><span t-esc="pay['tipo']"/></td>
+                                                <td class="text-end"><span t-esc="pay['amount']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                                <td class="text-end"><span t-esc="pay['amount_usd']" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+
+                                    <!-- RESUMEN / SALDO PENDIENTE SI APLICA -->
+                                    <tr t-if="inv['saldo_pendiente'] &gt; 0" style="font-size: 7.5px; background-color: #fff0f0;" class="text-danger fw-bold">
+                                        <td colspan="5" class="text-end py-0">PENDIENTE POR COBRAR (CRÉDITO):</td>
+                                        <td class="text-end py-0"><span t-esc="inv['saldo_pendiente']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                        <td class="text-end py-0"><span t-esc="inv['saldo_pendiente_usd']" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- TOTAL GENERAL DEL DÍA COMPACTO -->
+                        <div class="row mt-2" style="page-break-inside: avoid;">
+                            <div class="col-5 offset-7">
+                                <table class="table table-sm table-bordered fw-bold align-middle mb-0" style="font-size: 8px;">
+                                    <thead class="table-dark text-center">
+                                        <tr>
+                                            <th colspan="3" class="py-1">RESUMEN FINAL DEL DÍA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-1">Total Facturado:</td>
+                                            <td class="text-end py-1"><span t-esc="grand_total_facturado" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                            <td class="text-end py-1"><span t-esc="grand_total_facturado_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                        </tr>
+                                        <tr class="table-success">
+                                            <td class="py-1">Total Cobrado / Cobranza:</td>
+                                            <td class="text-end py-1"><span t-esc="grand_total_pagado" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                            <td class="text-end py-1"><span t-esc="grand_total_pagado_usd" t-options='{"widget": "monetary", "display_currency": currency_usd}'/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

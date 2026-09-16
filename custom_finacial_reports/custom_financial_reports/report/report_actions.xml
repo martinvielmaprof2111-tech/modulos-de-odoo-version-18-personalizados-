@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_relacion_cobranza" model="ir.actions.report">
+        <field name="name">Relación de Cobranza</field>
+        <field name="model">relacion.cobranza</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_financial_reports.template_relacion_cobranza</field>
+        <field name="report_file">custom_financial_reports.template_relacion_cobranza</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_cuadre_diario" model="ir.actions.report">
+        <field name="name">Cuadre Diario</field>
+        <field name="model">cuadre.diario</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_financial_reports.template_cuadre_diario</field>
+        <field name="report_file">custom_financial_reports.template_cuadre_diario</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_cuadre_diario_detalles" model="ir.actions.report">
+        <field name="name">Cuadre Diario Detalles</field>
+        <field name="model">cuadre.diario.detalles</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_financial_reports.template_cuadre_diario_detalles</field>
+        <field name="report_file">custom_financial_reports.template_cuadre_diario_detalles</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_libro_ventas_diario" model="ir.actions.report">
+        <field name="name">Libro de Ventas Diario</field>
+        <field name="model">libro.ventas.diario</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_financial_reports.template_libro_ventas_diario</field>
+        <field name="report_file">custom_financial_reports.template_libro_ventas_diario</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_resumen_libro_ventas" model="ir.actions.report">
+        <field name="name">Resumen Libro de Ventas</field>
+        <field name="model">resumen.libro.ventas</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_financial_reports.template_resumen_libro_ventas</field>
+        <field name="report_file">custom_financial_reports.template_resumen_libro_ventas</field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

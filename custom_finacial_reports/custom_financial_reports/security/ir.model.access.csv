@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_relacion_cobranza,access_relacion_cobranza,model_relacion_cobranza,account.group_account_invoice,1,1,1,1
+access_cuadre_diario,access_cuadre_diario,model_cuadre_diario,account.group_account_invoice,1,1,1,1
+access_resumen_libro_ventas,access_resumen_libro_ventas,model_resumen_libro_ventas,account.group_account_invoice,1,1,1,1
+access_libro_ventas_diario,access_libro_ventas_diario,model_libro_ventas_diario,account.group_account_invoice,1,1,1,1
+access_cuadre_diario_detalles,access_cuadre_diario_detalles,model_cuadre_diario_detalles,account.group_account_invoice,1,1,1,1
